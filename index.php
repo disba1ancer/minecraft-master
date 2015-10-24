@@ -58,6 +58,25 @@ case 'setskin':
 		$answer = array('error' => 'Bad request');
 	echo_log(json_encode($answer));
 	break;
+	
+case stripos($_GET['act'], 'skin/') === 0:
+	$begin = strpos($_GET['act'], '/');
+	$end = strrpos($_GET['act'], '.');
+	if($begin === false || $end === false) {
+		header("HTTP/1.0 404 Not Found");
+		exit;
+	}
+	$name = substr($_GET['act'], $begin + 1, $end - $begin - 1);
+	$link = newdb();
+	$stmt = $link->prepare("SELECT skin FROM players WHERE player=?");
+	$stmt->bind_param('s',$name);
+	$stmt->execute();
+	$stmt->bind_result($skin);
+	$stmt->fetch();
+	$stmt->free_result();
+	header('Location: '.$http_root.'/Skins/'.($skin ? $skin : "fairy"));
+	exit;
+	break;
 
 case 'join':
 	if (empty($jsonData['accessToken']) || empty($jsonData['selectedProfile']) || empty($jsonData['serverId']))
@@ -97,9 +116,9 @@ case 'hasJoined':
 	if(!$skin)
 		$skin = "fairy"; #default skin
 	$value = array("timestamp" => $skinDate, "profileId" => $clientToken, "profileName" => $_GET['username'], 
-		"textures" => ($isCapeOn ? array("SKIN" => array("url" => "https://master.ttyh.ru/Skins/".$_GET['username']),
-		"CAPE" => array("url" => "https://master.ttyh.ru/Capes/".$_GET['username'])) :
-		array("SKIN" => array("url" => "https://master.ttyh.ru/Skins/".$skin,
+		"textures" => ($isCapeOn ? array("SKIN" => array("url" => $http_root.'/Skins/'.$_GET['username']),
+		"CAPE" => array("url" => $http_root.'/Capes/'.$_GET['username'])) :
+		array("SKIN" => array("url" => $http_root.'/Skins/'.$skin,
 		"metadata" => array("model" => "slim")))));
 	$value=json_encode($value,JSON_UNESCAPED_SLASHES);
 	$fp = fopen("./key.pem", "r");
@@ -126,9 +145,9 @@ case stripos($_GET['act'], 'profile/') === 0:
 	if(!$skin)
 		$skin = "fairy"; #default skin
 	$value = array("timestamp" => $skinDate, "profileId" => $uuid, "profileName" => $player,
-		"textures" => ($isCapeOn ? array("SKIN" => array("url" => "https://master.ttyh.ru/Skins/".$player),
-		"CAPE" => array("url" => "https://master.ttyh.ru/Capes/".$player)) :
-		array("SKIN" => array("url" => "https://master.ttyh.ru/Skins/".$skin,
+		"textures" => ($isCapeOn ? array("SKIN" => array("url" => $http_root.'/Skins/'.$player),
+		"CAPE" => array("url" => $http_root.'/Capes/'.$player)) :
+		array("SKIN" => array("url" => $http_root.'/Skins/'.$skin,
 		"metadata" => array("model" => "slim")))));
 	$value=json_encode($value,JSON_UNESCAPED_SLASHES);
 	$fp = fopen("./key.pem", "r");
