@@ -118,8 +118,8 @@ case 'hasJoined':
 	$value = array("timestamp" => $skinDate, "profileId" => $clientToken, "profileName" => $_GET['username'], 
 		"textures" => ($isCapeOn ? array("SKIN" => array("url" => $http_root.'/Skins/'.$_GET['username']),
 		"CAPE" => array("url" => $http_root.'/Capes/'.$_GET['username'])) :
-		array("SKIN" => array("url" => $http_root.'/Skins/'.$skin,
-		"metadata" => array("model" => "slim")))));
+		array("SKIN" => array("url" => $http_root.'/Skins/'.$skin/*,
+		"metadata" => array("model" => "slim")*/))));
 	$value=json_encode($value,JSON_UNESCAPED_SLASHES);
 	$fp = fopen("./key.pem", "r");
 	$priv_key = fread($fp, filesize("./key.pem"));
@@ -147,8 +147,8 @@ case stripos($_GET['act'], 'profile/') === 0:
 	$value = array("timestamp" => $skinDate, "profileId" => $uuid, "profileName" => $player,
 		"textures" => ($isCapeOn ? array("SKIN" => array("url" => $http_root.'/Skins/'.$player),
 		"CAPE" => array("url" => $http_root.'/Capes/'.$player)) :
-		array("SKIN" => array("url" => $http_root.'/Skins/'.$skin,
-		"metadata" => array("model" => "slim")))));
+		array("SKIN" => array("url" => $http_root.'/Skins/'.$skin/*,
+		"metadata" => array("model" => "slim")*/))));
 	$value=json_encode($value,JSON_UNESCAPED_SLASHES);
 	$fp = fopen("./key.pem", "r");
 	$priv_key = fread($fp, filesize("./key.pem"));
