@@ -113,8 +113,8 @@ case 'hasJoined':
 	$stmt->bind_result($clientToken,$cape,$skin, $skin_model);
 	if (!$stmt->fetch()) 
 		die();
-	/*if(!$skin)
-		$skin = "fairy"; #default skin*/
+	if(!$skin)
+		$skin = "fairy"; #default skin
 	$value = array("timestamp" => $skinDate, "profileId" => $clientToken, "profileName" => $_GET['username']);
 	$value["textures"] = array();
 	if ($skin) {
@@ -146,8 +146,8 @@ case stripos($_GET['act'], 'profile/') === 0:
 	$stmt->bind_result($player,$cape,$skin, $skin_model);
 	if (!$stmt->fetch())
 		die();
-	/*if(!$skin)
-		$skin = "fairy"; #default skin*/
+	if(!$skin)
+		$skin = "fairy"; #default skin
 	$value = array("timestamp" => $skinDate, "profileId" => $uuid, "profileName" => $player);
 	$value["textures"] = array();
 	if ($skin) {
