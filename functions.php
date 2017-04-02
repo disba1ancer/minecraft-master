@@ -156,7 +156,7 @@ function toUUID($string) {
 	return substr_replace($newstr, "-", 23, 0);
 }
 
-function get_skin($user,$skinData,$skin_model) {
+function set_skin($user,$skinData,$skin_model) {
 	$tmp = tempnam("/tmp","skin_");
 	if (!file_put_contents($tmp,base64_decode($skinData)))
 		return FALSE;

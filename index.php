@@ -52,7 +52,7 @@ case 'setskin':
 		'errorMessage' => 'Bad request', 'cause' => 'Bad request'))));
 	if (!m_login($jsonData['username'],$jsonData['password']))
 		die(echo_log(json_encode(array('error' => 'Bad login'))));
-	if (get_skin($jsonData['username'],$jsonData['skinData'], isset($jsonData['skinModel']) ? $jsonData['skinModel'] : null))
+	if (set_skin($jsonData['username'],$jsonData['skinData'], isset($jsonData['skinModel']) ? $jsonData['skinModel'] : null))
 		$answer = array('username' => $jsonData['username'], 'status' => 'accepted');
 	else
 		$answer = array('error' => 'Bad request');
