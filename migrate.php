@@ -31,6 +31,7 @@ if (!migrationHistoryExist($db)) {
 	$db->query("CREATE TABLE migration_history(id INTEGER PRIMARY KEY AUTO_INCREMENT, title VARCHAR(64) UNIQUE NOT NULL, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
 }
 $sql = $db->prepare("SELECT title FROM migration_history WHERE title=?");
+$insertsql = $db->prepare("INSERT INTO migration_history(title) VALUES(?)");
 for ($i = 0, $count = count($migrations); $i < $count; ++$i){
 	$sql->bind_param('s', $migrations[$i]["title"]);
 	$sql->execute();
@@ -38,10 +39,8 @@ for ($i = 0, $count = count($migrations); $i < $count; ++$i){
 	$sql->store_result();
 	if ($sql->num_rows == 0){
 		$migrations[$i]["function"]();
-		$insertsql = $db->prepare("INSERT INTO migration_history(title) VALUES(?)");
 		$insertsql->bind_param("s", $migrations[$i]['title']);
 		$insertsql->execute();
-		$insertsql->close();
 	}
 	$sql->free_result();
 }
