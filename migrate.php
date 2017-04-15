@@ -38,7 +38,10 @@ for ($i = 0, $count = count($migrations); $i < $count; ++$i){
 	$sql->store_result();
 	if ($sql->num_rows == 0){
 		$migrations[$i]["function"]();
-		$db->query("INSERT INTO migration_history(title) VALUES('{$migrations[$i]['title']}')");
+		$insertsql = $db->prepare("INSERT INTO migration_history(title) VALUES(?)");
+		$insertsql->bind_param("s", $migrations[$i]['title']);
+		$insertsql->execute();
+		$insertsql->close();
 	}
 	$sql->free_result();
 }
