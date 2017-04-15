@@ -108,3 +108,12 @@ CREATE TABLE `unbanned_players` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2014-09-05 14:37:15
+
+DROP TABLE IF EXISTS `migration_history`;
+
+CREATE TABLE `migration_history` (
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
+  `title` varchar(64) UNIQUE NOT NULL,
+  `timestamp` timestamp DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `migration_history`(`title`) VALUES("added_skin_models_support");
